@@ -1,0 +1,29 @@
+The nc command runs netcat that reads and writes data acrross network connections using the tdp or udp protocol.
+
+nc -z -w6 dbcsterl08a 1521; echo $?
+
+
+Port Scanning
+
+It may be useful to know which ports are open and running services on a target machine. The -z flag can be used to tell nc to report open ports, rather than initiate a connection. Usually it's useful to turn on verbose output to stderr by use this option in conjunction with -v option.
+
+For example:
+
+nc -zv host.example.com 20-30
+
+Connection to host.example.com 22 port [tcp/ssh] succeeded!
+Connection to host.example.com 25 port [tcp/smtp] succeeded!
+
+The port range was specified to limit the search to ports 20 - 30, and is scanned by increasing order.
+
+You can also specify a list of ports to scan, for example:
+
+nc -zv host.example.com 80 20 22
+
+nc: connect to host.example.com 80 (tcp) failed: Connection refused 
+nc: connect to host.example.com 20 (tcp) failed: Connection refused 
+Connection to host.example.com port [tcp/ssh] succeeded! 
+
+The ports are scanned by the order you given.
+
+Alternatively, it might be useful to know which server software is running, and which versions. This information is often contained within the greeting banners. In order to retrieve these, it is necessary to first make a connection, and then break the connection when the banner has been retrieved. This can be accomplished by specifying a small timeout with the -w flag, or perhaps by issuing a "QUIT" command to the server:
